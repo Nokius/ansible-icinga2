@@ -1,0 +1,13 @@
+---
+- name: generate configuration
+  become: yes
+  template:
+    src: templates/configuration-generic-template.conf.j2
+    dest: "{{ i2_conf_dir }}/{{ i2_confd }}/{{ item.key }}.conf"
+    owner: "{{ i2_user }}"
+    group: "{{ i2_group }}"
+    mode: 0644
+  with_dict: "{{ i2_configurations }}"
+  register: managed_configurations
+  notify:
+    - restart icinga2

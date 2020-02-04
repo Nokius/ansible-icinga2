@@ -3,6 +3,7 @@
   include_vars: "{{ ansible_os_family }}.yml"
   tags:
     - feature-handler
+    - configuration-handler
     - config
 
 - name: include icinga2.yml
@@ -20,6 +21,12 @@
   when: i2_features|flatten|length > 0
   tags:
     - feature-handler
+
+- name: include icinga2-configurations.yml
+  include_tasks: icinga2-configurations.yml
+  when: i2_configurations|flatten|length > 0
+  tags:
+    - configuration-handler
 
 - name: Make sure Icinga 2 is started
   service:
